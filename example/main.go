@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	urlShortener := client.NewClient(client.WithBaseURL("link.inawo.live"), client.WithPoolCount(10))
+	urlShortener := client.NewClient(client.WithBaseURL("https://link.inawo.live"), client.WithPoolCount(10))
 
 	_, er := urlShortener.CheckHealth()
 	if er != nil {
