@@ -66,11 +66,6 @@ func (w withBaseURL) Apply(c *Client) {
 	c.baseURL = string(w)
 }
 
-const (
-	ShortenURL  FuncType = "shorten_url"
-	HealthCheck FuncType = "health_check"
-)
-
 func NewClient(opts ...Opts) *Client {
 
 	client := &Client{
@@ -188,6 +183,11 @@ func (c *Client) decrementActualPoolCount(num int) {
 	c.actualPoolCount -= num
 }
 
+const (
+	ShortenURL  FuncType = "shorten_url"
+	HealthCheck FuncType = "health_check"
+)
+
 func (c *Client) exec(raw Work) {
 
 	switch raw.fnType {
@@ -199,6 +199,12 @@ func (c *Client) exec(raw Work) {
 		raw.Output, raw.Error = c.workerFunctions.ShortenURL(raw.Input.(ShortenURLRequest))
 		//defer c.decrementRequestCount()
 		c.setResult(raw.ID, raw)
+	}
+}
+
+func (c *Client) stop(num int) {
+	for i := 0; i < num; i++ {
+		c.stopSignal <- true
 	}
 }
 
@@ -251,12 +257,6 @@ func (c *Client) start() {
 
 }
 
-func (c *Client) stop(num int) {
-	for i := 0; i < num; i++ {
-		c.stopSignal <- true
-	}
-}
-
 //
 //
 //			Worker Functions
@@ -276,7 +276,7 @@ func (c *Client) ShortenURL(request ShortenURLRequest) (*URLCollection, error) {
 	// wait for result
 	for {
 		select {
-		case <-time.After(time.Millisecond * 50):
+		case <-time.After(time.Millisecond * 10):
 
 			if result, ok := c.getResult(workRequest.ID); ok {
 
@@ -307,7 +307,7 @@ func (c *Client) CheckHealth() (bool, error) {
 	// wait for result
 	for {
 		select {
-		case <-time.After(time.Millisecond * 50):
+		case <-time.After(time.Millisecond * 10):
 
 			if result, ok := c.getResult(workRequest.ID); ok {
 
