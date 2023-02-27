@@ -69,7 +69,7 @@ func (w withBaseURL) Apply(c *Client) {
 func NewClient(opts ...Opts) *Client {
 
 	client := &Client{
-		baseURL:   "http://localhost:9000",
+		baseURL:   "https://staging-link.inawo.live",
 		poolCount: 1,
 		mtx: mutex{
 			request:         sync.Mutex{},
