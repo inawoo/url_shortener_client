@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/inawoo/url_shortener/client"
+	"github.com/inawoo/url_shortener_client"
 )
 
 func main() {

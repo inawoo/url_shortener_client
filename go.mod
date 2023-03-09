@@ -1,4 +1,4 @@
-module github.com/inawoo/url_shortener/client
+module github.com/inawoo/url_shortener_client
 
 go 1.19
 
