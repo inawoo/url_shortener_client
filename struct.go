@@ -1,6 +1,7 @@
 package client
 
 import (
+	"net/url"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -27,3 +28,19 @@ type (
 		UserID  *string `json:"user_id" example:"5f9e9b9b9b9b9b9b9b9b9b9b" description:"user id"`
 	}
 )
+
+func (fetchedUrl URLCollection) ComposeURLString() string {
+	var redirectUrl = url.URL{
+		Scheme:     "https",
+		Host:       fetchedUrl.Host,
+		Path:       fetchedUrl.Path,
+		OmitHost:   false,
+		ForceQuery: false,
+	}
+	var params = make(url.Values, len(fetchedUrl.Params))
+	for k, v := range fetchedUrl.Params {
+		params.Add(k, v)
+	}
+	redirectUrl.RawQuery = params.Encode()
+	return redirectUrl.String()
+}
