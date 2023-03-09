@@ -31,11 +31,9 @@ type (
 
 func (fetchedUrl URLCollection) ComposeURLString() string {
 	var redirectUrl = url.URL{
-		Scheme:     "https",
-		Host:       fetchedUrl.Host,
-		Path:       fetchedUrl.Path,
-		OmitHost:   false,
-		ForceQuery: false,
+		Scheme: "https",
+		Host:   fetchedUrl.Host,
+		Path:   fetchedUrl.Path,
 	}
 	var params = make(url.Values, len(fetchedUrl.Params))
 	for k, v := range fetchedUrl.Params {
