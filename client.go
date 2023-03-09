@@ -239,8 +239,6 @@ func (c *Client) monitor() {
 				c.stop(1)
 				c.decrementActualPoolCount(1)
 			}
-
-			println("request count: ", c.getRequestCount())
 		}
 	}
 }
